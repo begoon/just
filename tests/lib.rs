@@ -132,6 +132,7 @@ mod show;
 mod signals;
 mod slash_operator;
 mod string;
+mod structured_data_functions;
 mod subsequents;
 mod summary;
 mod tempdir;

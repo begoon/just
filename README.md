@@ -2130,6 +2130,32 @@ which will halt execution.
 - `read(path)`<sup>1.39.0</sup> - Returns the content of file at `path` as
   string.
 
+#### Structured Data
+
+- `json(filename, key1, key2, ...)` - Read a JSON file and index into it with
+  the given keys. For mappings, keys are used as field names. For arrays, keys
+  are parsed as integer indices. Returns the final scalar value as a string.
+  Aborts if the file is missing, the content cannot be parsed, a key is missing,
+  an array index is invalid, or the final value is not a scalar.
+
+  ```just
+  version := json('package.json', 'version')
+  ```
+
+- `toml(filename, key1, key2, ...)` - Read a TOML file and index into it, using
+  the same rules as `json()`.
+
+  ```just
+  version := toml('pyproject.toml', 'project', 'version')
+  ```
+
+- `yaml(filename, key1, key2, ...)` - Read a YAML file and index into it, using
+  the same rules as `json()`.
+
+  ```just
+  rustflags := yaml('.github/workflows/ci.yaml', 'env', 'RUSTFLAGS')
+  ```
+
 #### Assertions and Error Reporting
 
 - `assert(CONDITION, EXPRESSION)`<sup>1.27.0</sup> - Error with message

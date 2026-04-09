@@ -67,6 +67,7 @@ pub(crate) fn get(name: &str) -> Option<Function> {
     "invocation_directory_native" => Nullary(invocation_directory_native),
     "is_dependency" => Nullary(is_dependency),
     "join" => BinaryPlus(join),
+    "json" => UnaryPlus(json),
     "just_executable" => Nullary(just_executable),
     "just_pid" => Nullary(just_pid),
     "justfile" => Nullary(justfile),
@@ -100,6 +101,7 @@ pub(crate) fn get(name: &str) -> Option<Function> {
     "source_file" => Nullary(source_file),
     "style" => Unary(style),
     "titlecase" => Unary(titlecase),
+    "toml" => UnaryPlus(toml),
     "trim" => Unary(trim),
     "trim_end" => Unary(trim_end),
     "trim_end_match" => Binary(trim_end_match),
@@ -111,6 +113,7 @@ pub(crate) fn get(name: &str) -> Option<Function> {
     "uppercase" => Unary(uppercase),
     "uuid" => Nullary(uuid),
     "which" => Unary(which),
+    "yaml" => UnaryPlus(yaml),
     "without_extension" => Unary(without_extension),
     _ => return None,
   };
@@ -369,6 +372,10 @@ fn prepend(_context: Context, prefix: &str, s: &str) -> FunctionResult {
   )
 }
 
+fn json(context: Context, filename: &str, keys: &[String]) -> FunctionResult {
+  structured_data::index(context, filename, keys, structured_data::Format::Json)
+}
+
 fn join(_context: Context, base: &str, with: &str, and: &[String]) -> FunctionResult {
   let mut result = Utf8Path::new(base).join(with);
   for arg in and {
@@ -620,6 +627,10 @@ fn style(context: Context, s: &str) -> FunctionResult {
   }
 }
 
+fn toml(context: Context, filename: &str, keys: &[String]) -> FunctionResult {
+  structured_data::index(context, filename, keys, structured_data::Format::Toml)
+}
+
 fn titlecase(_context: Context, s: &str) -> FunctionResult {
   Ok(s.to_title_case())
 }
@@ -662,6 +673,10 @@ fn uppercase(_context: Context, s: &str) -> FunctionResult {
 
 fn uuid(_context: Context) -> FunctionResult {
   Ok(uuid::Uuid::new_v4().to_string())
+}
+
+fn yaml(context: Context, filename: &str, keys: &[String]) -> FunctionResult {
+  structured_data::index(context, filename, keys, structured_data::Format::Yaml)
 }
 
 fn which(context: Context, name: &str) -> FunctionResult {
