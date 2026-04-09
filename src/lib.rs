@@ -294,6 +294,7 @@ mod string_delimiter;
 mod string_kind;
 mod string_literal;
 mod string_state;
+mod structured_data;
 mod subcommand;
 mod suggestion;
 mod switch;
